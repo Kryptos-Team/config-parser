@@ -22,6 +22,7 @@ help:
 	@echo 'Targets:'
 	@echo ' build              builds a new version of your Docker image and tags it'
 	@echo ' push               push the image to your registry'
+	@echo ' publish            publish the package on pypi'
 
 build: pre-build docker-build post-build
 
@@ -45,3 +46,9 @@ push: pre-push do-push post-push
 
 do-push:
 	docker push $(IMAGE):$(VERSION)
+
+
+publish:
+	python -m build --sdist --wheel --outdir dist/
+	twine check dist/*
+	twine upload dist/*
